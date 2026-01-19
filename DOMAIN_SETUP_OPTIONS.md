@@ -47,8 +47,8 @@ If you don't own `peachsounds.com`, you have these options:
 
 ### 3c. Use Gmail with Display Name Only
 - Keep using Gmail
-- Set display name to "DynamicMusicVST Beta"
-- Email will show as: `DynamicMusicVST Beta <yourgmail@gmail.com>`
+- Set display name to "AnyWave Beta"
+- Email will show as: `AnyWave Beta <yourgmail@gmail.com>`
 - Not ideal but works without domain ownership
 
 ## Option 4: Purchase the Domain

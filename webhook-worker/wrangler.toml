@@ -1,0 +1,14 @@
+name = "peachsounds-webhook"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+
+# Uncomment and set your account_id if needed
+# account_id = "your-cloudflare-account-id"
+
+[vars]
+# Non-secret environment variables go here
+# POSTHOG_API_KEY is hardcoded in worker.js for simplicity
+
+# Secret variables (set via `wrangler secret put LEMONSQUEEZY_WEBHOOK_SECRET`)
+# LEMONSQUEEZY_WEBHOOK_SECRET = "set-via-wrangler-secret"
+

@@ -15,9 +15,9 @@ You have two options for sending early access emails:
    - Go to Email Templates → Create New Template
    - Use this template:
    ```
-   Subject: Your DynamicMusicVST Early Access
+   Subject: Your AnyWave Early Access
    
-   Welcome to DynamicMusicVST Beta!
+   Welcome to AnyWave Beta!
    
    Thank you for joining our early access program.
    
@@ -51,7 +51,7 @@ You have two options for sending early access emails:
    ```
    EMAIL_USER=your-email@gmail.com
    EMAIL_PASSWORD=your-app-password
-   DOWNLOAD_LINK=https://your-domain.com/downloads/DynamicMusicVST.dmg
+   DOWNLOAD_LINK=https://your-domain.com/downloads/AnyWave.dmg
    PORT=3000
    ```
 

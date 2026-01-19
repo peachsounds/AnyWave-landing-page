@@ -6,7 +6,7 @@ Your landing page is ready to push to GitHub! Follow these steps:
 
 1. **Go to GitHub:** https://github.com/new
 2. **Repository name:** `dynamicmusicvst-landing` (or any name you prefer)
-3. **Description:** "Landing page for DynamicMusicVST"
+3. **Description:** "Landing page for AnyWave"
 4. **Visibility:** Public (for free GitHub Pages) or Private
 5. **DO NOT** initialize with README, .gitignore, or license (we already have these)
 6. **Click "Create repository"**

@@ -35,7 +35,7 @@ Your landing page repository is **safe to make public** because:
 
 ### 2. Download Link (Currently Placeholder)
 
-**Current:** `https://your-domain.com/downloads/DynamicMusicVST.dmg`
+**Current:** `https://your-domain.com/downloads/AnyWave.dmg`
 
 **When you add the real link:**
 - The download URL will be public (which is fine - it's meant to be shared)

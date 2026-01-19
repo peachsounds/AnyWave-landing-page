@@ -458,7 +458,7 @@
             justify-content: flex-start;
             position: relative;
             margin-top: var(--nav-h);
-            padding: 20px 2rem 24px;
+            padding: 12px 2rem 12px;
             overflow: visible;
         }
         
@@ -552,7 +552,7 @@
             color: var(--text-secondary);
             max-width: 680px;
             width: 100%;
-            margin: 0 0 20px 0;
+            margin: 0 0 12px 0;
             line-height: 1.5;
             opacity: 0.9;
             animation: fadeInUp 0.8s ease 0.4s both;
@@ -563,7 +563,7 @@
             gap: 0.9rem;
             justify-content: center;
             flex-wrap: wrap;
-            margin-bottom: 12px;
+            margin-bottom: 4px;
             animation: fadeInUp 0.8s ease 0.5s both;
         }
         
@@ -742,28 +742,34 @@
             background: var(--bg-secondary);
         }
         
+        .social-proof-inline {
+            margin-top: 0.5rem;
+            text-align: center;
+            animation: fadeInUp 0.8s ease 0.6s both;
+        }
+        
         .social-proof-text {
             color: var(--text-muted);
-            font-size: 0.9rem;
-            margin-bottom: 2rem;
+            font-size: 0.7rem;
+            margin-bottom: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 0.1em;
         }
         
         .daw-logos {
             display: flex;
-            gap: 3rem;
+            gap: 1rem;
             justify-content: center;
             align-items: center;
             flex-wrap: wrap;
-            opacity: 0.6;
+            opacity: 0.5;
         }
         
         .daw-logo {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.9rem;
+            font-size: 0.7rem;
             color: var(--text-secondary);
-            padding: 0.5rem 1rem;
+            padding: 0.3rem 0.6rem;
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 6px;
         }
@@ -871,6 +877,7 @@
         .features {
             padding: var(--section-pad-y) var(--section-pad-x);
             background: var(--bg-secondary);
+            scroll-margin-top: calc(var(--nav-h) - 120px);
         }
         
         .features-container {
@@ -1941,6 +1948,27 @@
                 font-size: calc(var(--scale) * 0.85);
             }
             
+            /* Social proof inline */
+            .social-proof-inline {
+                margin-top: calc(var(--scale) * 0.54);
+            }
+            
+            .social-proof-text {
+                font-size: calc(var(--scale) * 0.76);
+                margin-bottom: calc(var(--scale) * 0.82);
+                letter-spacing: 0.1em;
+            }
+            
+            .daw-logos {
+                gap: calc(var(--scale) * 1.09);
+            }
+            
+            .daw-logo {
+                font-size: calc(var(--scale) * 0.76);
+                padding: calc(var(--scale) * 0.33) calc(var(--scale) * 0.65);
+                border-radius: calc(var(--scale) * 0.41);
+            }
+            
             /* Navigation */
             nav {
                 padding: calc(var(--scale) * 0.8) calc(var(--scale) * 5);
@@ -2898,7 +2926,6 @@
             </a>
             <div class="nav-links">
                 <a href="#how-it-works">How It Works</a>
-                <a href="#pricing">Pricing</a>
                 <a href="#pricing" class="nav-cta">Get AnyWave</a>
             </div>
         </div>
@@ -2937,19 +2964,19 @@
                     <span>See How It Works</span>
                 </a>
             </div>
-        </div>
-    </section>
-
-    <!-- Social Proof -->
-    <section class="social-proof">
-        <p class="social-proof-text">Perfect for any video editing workflow</p>
-        <div class="daw-logos">
-            <span class="daw-logo">Commercials</span>
-            <span class="daw-logo">Trailers</span>
-            <span class="daw-logo">Social Media</span>
-            <span class="daw-logo">YouTube</span>
-            <span class="daw-logo">Film & TV</span>
-            <span class="daw-logo">Podcasts</span>
+            
+            <!-- Social Proof -->
+            <div class="social-proof-inline">
+                <p class="social-proof-text">Perfect for any story telling workflow</p>
+                <div class="daw-logos">
+                    <span class="daw-logo">Commercials</span>
+                    <span class="daw-logo">Trailers</span>
+                    <span class="daw-logo">Social Media</span>
+                    <span class="daw-logo">YouTube</span>
+                    <span class="daw-logo">Film & TV</span>
+                    <span class="daw-logo">Podcasts</span>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -2960,7 +2987,7 @@
                 <p class="section-label">How It Works</p>
                 <h2>Pin. Drag. Done.</h2>
                 <p class="section-subtitle">
-                    Drag moments in your music to new positions. The rest reshapes automatically.
+                    Make your music fit any duration.<br>Rearrange the emotional moments to tell your story. <br> AnyWave intelligently cuts and stitches the rest with seamless transitions, reshaping the music to match your needs.
                 </p>
             </div>
             
@@ -2995,7 +3022,7 @@
             <div class="section-header">
                 <h2>Choose Your Plan</h2>
                 <p class="section-subtitle">
-                    Start creating perfectly-timed edits today
+                    Start shaping your music
                 </p>
             </div>
             
@@ -3016,7 +3043,7 @@
                         <li>✓ Premium support</li>
                         <li>✓ Commercial license</li>
                     </ul>
-                    <a href="https://peachsounds.lemonsqueezy.com/checkout/buy/63bb0aac-935d-4274-b374-0d2987314edc?embed=1" class="lemonsqueezy-button btn btn-primary btn-large">
+                    <a href="https://peachsounds.lemonsqueezy.com/checkout/buy/5585ea8e-18e3-4608-ab13-fb9bac5f36c4?embed=1" class="lemonsqueezy-button btn btn-primary btn-large">
                         Start Subscription
                     </a>
                     <p class="plan-note">Cancel anytime</p>
@@ -3038,7 +3065,7 @@
                         <li>&nbsp;</li>
                     </ul>
                     <a href="#download" class="btn btn-secondary btn-large">
-                        Try Free
+                        Download First
                     </a>
                     <p class="plan-note">No credit card required</p>
                 </div>
@@ -3408,7 +3435,7 @@
             downloadBtn.addEventListener('click', () => {
                 // Track download click
                 if (typeof posthog !== 'undefined') {
-                    posthog.capture('download_clicked', {
+                    posthog.capture('app_download_clicked', {
                         platform: 'mac',
                         source: 'landing_page'
                     });
@@ -3441,7 +3468,7 @@
             function updateCheckoutUrl() {
                 if (typeof posthog !== 'undefined' && posthog.get_distinct_id) {
                     const distinctId = posthog.get_distinct_id();
-                    const baseHref = 'https://peachsounds.lemonsqueezy.com/checkout/buy/63bb0aac-935d-4274-b374-0d2987314edc?embed=1';
+                    const baseHref = 'https://peachsounds.lemonsqueezy.com/checkout/buy/5585ea8e-18e3-4608-ab13-fb9bac5f36c4?embed=1';
                     const newHref = `${baseHref}&checkout[custom][posthog_id]=${encodeURIComponent(distinctId)}`;
                     checkoutBtn.setAttribute('href', newHref);
                     console.log('Checkout URL updated with PostHog ID:', distinctId);

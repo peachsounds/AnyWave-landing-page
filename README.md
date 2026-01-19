@@ -1,6 +1,6 @@
-# DynamicMusicVST Landing Page
+# AnyWave Landing Page
 
-Landing page for DynamicMusicVST - Fit Any Music to Your Edit.
+Landing page for AnyWave - Fit Any Music to Your Edit.
 
 ## Setup
 

@@ -34,7 +34,7 @@ SendGrid is the easiest way to use a custom domain with EmailJS.
    - In EmailJS, edit your template
    - The "From Email" field should be set to: `beta@peachsounds.com`
    - Or use template variable: `{{from_email}}`
-   - The "From Name" can be: `DynamicMusicVST` or `{{from_name}}`
+   - The "From Name" can be: `AnyWave` or `{{from_name}}`
 
 6. **Test:**
    - Emails will now be sent from `beta@peachsounds.com`

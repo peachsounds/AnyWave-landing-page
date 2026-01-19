@@ -33,7 +33,7 @@ EmailJS uses the "From Email" set in your **EmailJS template settings**, not the
 2. **Click on your template** (template_hxm32ii)
 3. **In the template editor, find "From Email" field**
 4. **Change it to:** `beta@peachsounds.com`
-5. **"From Name" can be:** `DynamicMusicVST`
+5. **"From Name" can be:** `AnyWave`
 6. **Save the template**
 
 ### Step 4: Verify Your Domain (Important!)

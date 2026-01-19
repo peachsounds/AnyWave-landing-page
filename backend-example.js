@@ -11,7 +11,7 @@ app.use(cors());
 app.use(express.json());
 
 // Your download link
-const DOWNLOAD_LINK = process.env.DOWNLOAD_LINK || 'https://your-domain.com/downloads/DynamicMusicVST.dmg';
+const DOWNLOAD_LINK = process.env.DOWNLOAD_LINK || 'https://your-domain.com/downloads/AnyWave.dmg';
 
 // Email configuration (using Gmail as example)
 // For production, use SendGrid, Mailgun, or AWS SES
@@ -55,12 +55,12 @@ app.post('/api/early-access', async (req, res) => {
         const mailOptions = {
             from: process.env.EMAIL_USER,
             to: email,
-            subject: 'Your DynamicMusicVST Early Access',
+            subject: 'Your AnyWave Early Access',
             html: `
-                <h2>Welcome to DynamicMusicVST Beta!</h2>
+                <h2>Welcome to AnyWave Beta!</h2>
                 <p>Thank you for joining our early access program.</p>
                 <p>Click the link below to download:</p>
-                <p><a href="${DOWNLOAD_LINK}" style="background: #FF6B35; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; display: inline-block;">Download DynamicMusicVST</a></p>
+                <p><a href="${DOWNLOAD_LINK}" style="background: #FF6B35; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; display: inline-block;">Download AnyWave</a></p>
                 <p>If the button doesn't work, copy and paste this link:</p>
                 <p>${DOWNLOAD_LINK}</p>
                 <p>Best regards,<br>The PeachSounds Team</p>
