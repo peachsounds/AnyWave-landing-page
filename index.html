@@ -3043,7 +3043,7 @@
                         <li>✓ Premium support</li>
                         <li>✓ Commercial license</li>
                     </ul>
-                    <a href="https://peachsounds.lemonsqueezy.com/checkout/buy/083f1bcb-46a5-421e-9b35-6d62d61b29c5?embed=1" class="lemonsqueezy-button btn btn-primary btn-large">
+                    <a href="https://peachsounds.lemonsqueezy.com/checkout/buy/5585ea8e-18e3-4608-ab13-fb9bac5f36c4?embed=1" class="lemonsqueezy-button btn btn-primary btn-large">
                         Start Subscription
                     </a>
                     <p class="plan-note">Cancel anytime</p>
@@ -3468,7 +3468,7 @@
             function updateCheckoutUrl() {
                 if (typeof posthog !== 'undefined' && posthog.get_distinct_id) {
                     const distinctId = posthog.get_distinct_id();
-                    const baseHref = 'https://peachsounds.lemonsqueezy.com/checkout/buy/083f1bcb-46a5-421e-9b35-6d62d61b29c5?embed=1';
+                    const baseHref = 'https://peachsounds.lemonsqueezy.com/checkout/buy/5585ea8e-18e3-4608-ab13-fb9bac5f36c4?embed=1';
                     const newHref = `${baseHref}&checkout[custom][posthog_id]=${encodeURIComponent(distinctId)}`;
                     checkoutBtn.setAttribute('href', newHref);
                     console.log('Checkout URL updated with PostHog ID:', distinctId);
