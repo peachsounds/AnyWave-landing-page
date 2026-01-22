@@ -114,12 +114,61 @@ async function handleWebhook(request, env) {
 }
 
 /**
+ * Create alias in PostHog to connect old anonymous ID to new identified ID
+ * This merges the anonymous user's history into the identified user's profile
+ */
+async function createAlias(oldAnonymousId, newIdentifiedId) {
+    if (!oldAnonymousId || !newIdentifiedId) {
+        console.log('Cannot create alias: missing oldAnonymousId or newIdentifiedId');
+        return false;
+    }
+    
+    // Don't alias if they're the same
+    if (oldAnonymousId === newIdentifiedId) {
+        console.log('Skipping alias: IDs are the same');
+        return false;
+    }
+    
+    console.log('Creating alias:', { oldAnonymousId, newIdentifiedId });
+    
+    const response = await fetch(`${POSTHOG_HOST}/capture/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            api_key: POSTHOG_API_KEY,
+            event: '$create_alias',
+            distinct_id: newIdentifiedId,  // The new "main" identity (hashed email)
+            properties: {
+                alias: oldAnonymousId,     // The old anonymous ID to merge in
+                $lib: 'cloudflare-worker'
+            },
+            timestamp: new Date().toISOString()
+        })
+    });
+    
+    console.log('Alias response status:', response.status);
+    return response.ok;
+}
+
+/**
  * Handle order_created event (for one-time purchases or lead magnets)
  */
 async function handleOrderCreated(data) {
     const order = data.data?.attributes;
     const email = order?.user_email;
-    const customData = data.meta?.custom_data || {};
+    
+    // Lemon Squeezy can put custom data in different places - check all of them
+    const metaCustomData = data.meta?.custom_data || {};
+    const orderCustomData = order?.custom_data || {};
+    const firstOrderItemCustomData = order?.first_order_item?.custom_data || {};
+    
+    // Log all possible locations to debug
+    console.log('=== DEBUG: Custom Data Locations ===');
+    console.log('meta.custom_data:', JSON.stringify(metaCustomData));
+    console.log('data.attributes.custom_data:', JSON.stringify(orderCustomData));
+    console.log('first_order_item.custom_data:', JSON.stringify(firstOrderItemCustomData));
     
     if (!email) {
         console.error('No email in order');
@@ -128,13 +177,49 @@ async function handleOrderCreated(data) {
     
     const hashedEmail = await hashEmail(email);
     
-    // Get tracking data passed through checkout
-    const uuid = customData.uuid || null;
-    const passedHashedEmail = customData.hashed_email || null;
+    // Get PostHog anonymous ID - check all possible locations
+    const posthogId = metaCustomData.posthog_id 
+        || orderCustomData.posthog_id 
+        || firstOrderItemCustomData.posthog_id 
+        || null;
     
-    // Use passed hashed email if available (for consistency), otherwise compute it
-    const distinctId = passedHashedEmail || hashedEmail;
+    console.log('=== Extracted Values ===');
+    console.log('hashedEmail:', hashedEmail);
+    console.log('posthogId:', posthogId);
     
+    // Step 1: If we have the anonymous PostHog ID, merge it with the hashed email
+    if (posthogId && posthogId !== hashedEmail) {
+        console.log('Merging users: connecting OLD anonymous ID to NEW hashed email...');
+        console.log(`  OLD (anonymous): ${posthogId}`);
+        console.log(`  NEW (identified): ${hashedEmail}`);
+        
+        // Method 1: Create alias (old → new)
+        const aliasSuccess = await createAlias(posthogId, hashedEmail);
+        console.log('Alias result:', aliasSuccess ? 'SUCCESS' : 'FAILED');
+        
+        // Method 2: Also send $identify from the anonymous ID's perspective
+        // This tells PostHog "the anonymous user is now identified as hashed email"
+        const identifyResponse = await fetch(`${POSTHOG_HOST}/capture/`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                api_key: POSTHOG_API_KEY,
+                event: '$identify',
+                distinct_id: hashedEmail,
+                properties: {
+                    $anon_distinct_id: posthogId,
+                    $lib: 'cloudflare-worker'
+                },
+                timestamp: new Date().toISOString()
+            })
+        });
+        console.log('Identify result:', identifyResponse.ok ? 'SUCCESS' : 'FAILED');
+        
+    } else if (!posthogId) {
+        console.log('No posthog_id found in any custom_data location - cannot merge');
+    }
+    
+    // Step 2: Send checkout_completed event (using hashed email as distinct_id)
     const properties = {
         order_id: data.data?.id,
         order_number: order?.order_number,
@@ -143,18 +228,18 @@ async function handleOrderCreated(data) {
         status: order?.status,
         product_name: order?.first_order_item?.product_name,
         variant_name: order?.first_order_item?.variant_name,
-        // Include anonymous UUID for funnel tracking
-        anonymous_uuid: uuid,
+        // Include anonymous PostHog ID for reference
+        anonymous_posthog_id: posthogId,
         // Include hashed email for verification
         hashed_email: hashedEmail
     };
     
-    console.log('Sending checkout_completed to PostHog', { distinctId, properties });
+    console.log('Sending checkout_completed to PostHog with distinct_id:', hashedEmail);
     
-    const success = await sendToPostHog('checkout_completed', distinctId, properties);
+    const success = await sendToPostHog('checkout_completed', hashedEmail, properties);
     
     if (success) {
-        console.log('PostHog event sent successfully');
+        console.log('PostHog checkout_completed event sent successfully');
     } else {
         console.error('Failed to send PostHog event');
     }

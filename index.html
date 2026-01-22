@@ -301,21 +301,32 @@
             --wave-blue-light: #6BA5E5;
             --wave-blue-dark: #3A7BC4;
             
-            /* Dark theme */
-            --bg-primary: #0A0A0F;
-            --bg-secondary: #12121A;
-            --bg-tertiary: #1A1A25;
-            --bg-card: #15151F;
+            /* Light theme (default) - page background */
+            --bg-primary: #FFFFFF;
+            --bg-secondary: #F5F5F7;
+            --bg-tertiary: #EAEAEC;
             
-            /* Text */
-            --text-primary: #FFFFFF;
-            --text-secondary: #A0A0B0;
-            --text-muted: #606070;
+            /* Light theme cards */
+            --bg-card: #2D2D3A;
+            --bg-card-secondary: #252530;
+            
+            /* Light theme text on white background */
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --text-muted: #888888;
+            
+            /* Text on dark cards */
+            --text-on-card: #FFFFFF;
+            --text-on-card-secondary: #A0A0B0;
+            
+            /* Border colors */
+            --border-light: rgba(0, 0, 0, 0.1);
+            --border-card: rgba(255, 255, 255, 0.05);
             
             /* Gradients */
             --gradient-hero: linear-gradient(135deg, var(--peach-orange) 0%, var(--wave-blue) 100%);
             --gradient-card: linear-gradient(145deg, rgba(255, 107, 53, 0.08) 0%, rgba(74, 144, 217, 0.08) 100%);
-            --gradient-glow: radial-gradient(ellipse at center, rgba(255, 107, 53, 0.15) 0%, transparent 70%);
+            --gradient-glow: radial-gradient(ellipse at center, rgba(255, 107, 53, 0.08) 0%, transparent 70%);
             
             /* Section padding system */
             --section-pad-x: 2rem;
@@ -326,6 +337,26 @@
             --nav-h: 56px;
             --hero-pad-top: 16px;
             --hero-pad-bottom: 24px;
+        }
+        
+        /* Dark theme */
+        [data-theme="dark"] {
+            --bg-primary: #0A0A0F;
+            --bg-secondary: #12121A;
+            --bg-tertiary: #1A1A25;
+            
+            --bg-card: #1E1E2A;
+            --bg-card-secondary: #16161F;
+            
+            --text-primary: #FFFFFF;
+            --text-secondary: #A0A0B0;
+            --text-muted: #6B6B7B;
+            
+            --text-on-card: #FFFFFF;
+            --text-on-card-secondary: #A0A0B0;
+            
+            --border-light: rgba(255, 255, 255, 0.08);
+            --border-card: rgba(255, 255, 255, 0.08);
         }
         
         * {
@@ -362,17 +393,27 @@
             right: 0;
             z-index: 1000;
             padding: 0.65rem 2rem;
-            background: rgba(10, 10, 15, 0.8);
+            background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid var(--border-light);
             transition: all 0.3s ease;
             overflow-x: hidden;
             width: 100%;
         }
         
+        [data-theme="dark"] nav {
+            background: rgba(10, 10, 15, 0.9);
+        }
+        
         nav.scrolled {
             padding: 0.75rem 2rem;
-            background: rgba(10, 10, 15, 0.95);
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+        
+        [data-theme="dark"] nav.scrolled {
+            background: rgba(10, 10, 15, 0.98);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
         
         .nav-container {
@@ -447,6 +488,54 @@
             box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
         }
         
+        /* Theme Toggle */
+        .theme-toggle {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            margin-left: 0.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+        
+        .theme-icon {
+            font-size: 1.1rem;
+            position: absolute;
+            transition: all 0.3s ease;
+        }
+        
+        .theme-icon.light {
+            opacity: 1;
+            transform: rotate(0deg);
+        }
+        
+        .theme-icon.dark {
+            opacity: 0;
+            transform: rotate(-90deg);
+        }
+        
+        [data-theme="dark"] .theme-icon.light {
+            opacity: 0;
+            transform: rotate(90deg);
+        }
+        
+        [data-theme="dark"] .theme-icon.dark {
+            opacity: 1;
+            transform: rotate(0deg);
+        }
+        
         /* ============================================
            HERO SECTION
         ============================================ */
@@ -484,8 +573,8 @@
             position: absolute;
             inset: 0;
             background-image: 
-                linear-gradient(rgba(255, 107, 53, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 107, 53, 0.03) 1px, transparent 1px);
+                linear-gradient(rgba(255, 107, 53, 0.06) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 107, 53, 0.06) 1px, transparent 1px);
             background-size: 60px 60px;
             mask-image: radial-gradient(ellipse at center, black 0%, transparent 70%);
         }
@@ -539,10 +628,10 @@
         }
         
         .hero-tagline {
-            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-size: clamp(1.75rem, 3.5vw, 2.5rem);
             font-weight: 600;
-            color: rgba(255, 255, 255, 0.9);
-            margin: 0 0 16px 0;
+            color: var(--text-primary);
+            margin: 1rem 0 16px 0;
             letter-spacing: -0.01em;
             animation: fadeInUp 0.8s ease 0.25s both;
         }
@@ -554,7 +643,6 @@
             width: 100%;
             margin: 0 0 12px 0;
             line-height: 1.5;
-            opacity: 0.9;
             animation: fadeInUp 0.8s ease 0.4s both;
         }
         
@@ -569,10 +657,9 @@
         
         .hero-note {
             font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.85);
+            color: #888888;
             margin-top: 0;
             font-weight: 400;
-            opacity: 0.75;
             animation: fadeInUp 0.8s ease 0.7s both;
         }
         
@@ -604,14 +691,14 @@
         }
         
         .btn-secondary {
-            background: rgba(255, 255, 255, 0.05);
+            background: transparent;
             color: var(--text-primary);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 2px solid var(--border-light);
         }
         
         .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.2);
+            background: var(--bg-secondary);
+            border-color: var(--text-secondary);
         }
         
         .hero-visual {
@@ -737,8 +824,8 @@
         .social-proof {
             padding: var(--section-pad-y-tight) var(--section-pad-x);
             text-align: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
             background: var(--bg-secondary);
         }
         
@@ -762,7 +849,7 @@
             justify-content: center;
             align-items: center;
             flex-wrap: wrap;
-            opacity: 0.5;
+            opacity: 1;
         }
         
         .daw-logo {
@@ -770,7 +857,7 @@
             font-size: 0.7rem;
             color: var(--text-secondary);
             padding: 0.3rem 0.6rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-light);
             border-radius: 6px;
         }
         
@@ -801,12 +888,13 @@
             font-size: clamp(2rem, 4vw, 3rem);
             font-weight: 700;
             margin-bottom: 1rem;
+            color: var(--text-primary);
         }
         
         .section-subtitle {
             color: var(--text-secondary);
             font-size: 1.1rem;
-            max-width: 600px;
+            max-width: 850px;
             margin: 0 auto;
         }
         
@@ -887,20 +975,22 @@
         
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2.5rem;
+            max-width: 1100px;
+            margin: 0 auto;
         }
         
         .feature-card {
             background: var(--bg-card);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-card);
             border-radius: 20px;
             padding: 1.75rem;
             transition: all 0.3s ease;
         }
         
         .feature-card:hover {
-            border-color: rgba(74, 144, 217, 0.3);
+            border-color: rgba(255, 107, 53, 0.4);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
         }
         
@@ -920,12 +1010,32 @@
             font-size: 1.25rem;
             font-weight: 600;
             margin-bottom: 0.5rem;
+            min-height: 1.5rem;
+            color: var(--text-on-card);
         }
         
         .feature-card p {
-            color: var(--text-secondary);
+            color: var(--text-on-card-secondary);
             font-size: 0.95rem;
             line-height: 1.7;
+            margin-bottom: 1rem;
+            min-height: 4.1rem; /* Fixed height for 3 lines to align videos */
+        }
+        
+        .feature-video-container {
+            margin-top: 1rem;
+            border-radius: 12px;
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .feature-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensures video fills container while maintaining aspect */
+            display: block;
+            border-radius: 12px;
         }
         
         /* ============================================
@@ -1258,8 +1368,8 @@
         }
         
         .pricing-card {
-            background: var(--bg-secondary);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
             border-radius: 16px;
             padding: 1.75rem;
             position: relative;
@@ -1300,7 +1410,7 @@
         .plan-name {
             font-size: 1.25rem;
             margin-bottom: 0.5rem;
-            color: var(--text-primary);
+            color: var(--text-on-card);
         }
         
         .plan-price {
@@ -1317,13 +1427,13 @@
         }
         
         .plan-price .period {
-            color: var(--text-secondary);
+            color: var(--text-on-card-secondary);
             font-size: 0.9rem;
             margin-left: 0.25rem;
         }
         
         .plan-description {
-            color: var(--text-secondary);
+            color: var(--text-on-card-secondary);
             margin-bottom: 1rem;
             font-size: 0.9rem;
         }
@@ -1337,9 +1447,9 @@
         
         .plan-features li {
             padding: 0.5rem 0;
-            color: var(--text-secondary);
+            color: var(--text-on-card-secondary);
             font-size: 0.9rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid var(--border-card);
         }
         
         .plan-features li:last-child {
@@ -1349,7 +1459,19 @@
         .plan-note {
             margin-top: 0.75rem;
             font-size: 0.8rem;
-            color: var(--text-secondary);
+            color: var(--text-on-card-secondary);
+        }
+        
+        /* Button styles for dark pricing cards */
+        .pricing-card .btn-secondary {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-on-card);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .pricing-card .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
         }
         
         .pricing-faq {
@@ -1409,8 +1531,8 @@
             flex: 1;
             min-width: 250px;
             padding: 1rem 1.5rem;
-            background: var(--bg-card);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--bg-primary);
+            border: 1px solid var(--border-light);
             border-radius: 12px;
             color: var(--text-primary);
             font-size: 1rem;
@@ -1439,7 +1561,7 @@
         .form-free-note {
             flex-basis: 100%;
             font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.7);
+            color: #888888;
             margin-top: 0.75rem;
         }
         
@@ -1481,7 +1603,8 @@
             align-items: center;
             gap: 0.5rem;
             padding: 0.75rem;
-            background: rgba(255, 255, 255, 0.03);
+            background: var(--bg-primary);
+            border: 1px solid var(--border-light);
             border-radius: 8px;
             font-size: 0.9rem;
             color: var(--text-secondary);
@@ -1522,8 +1645,8 @@
         }
         
         .install-instructions {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--bg-primary);
+            border: 1px solid var(--border-light);
             border-radius: 12px;
             padding: 1.5rem;
             text-align: left;
@@ -1541,7 +1664,7 @@
         .install-instructions ol {
             margin: 0;
             padding-left: 1.25rem;
-            color: rgba(255, 255, 255, 0.8);
+            color: #555555;
             font-size: 0.9rem;
             line-height: 1.8;
         }
@@ -1560,8 +1683,8 @@
         }
         
         select.email-input option {
-            background: #1a1a1a;
-            color: white;
+            background: var(--bg-primary);
+            color: var(--text-primary);
         }
         
         .email-submit {
@@ -1639,7 +1762,7 @@
         ============================================ */
         footer {
             padding: 2rem var(--section-pad-x) 1.5rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-top: 1px solid var(--border-light);
         }
         
         .footer-container {
@@ -1689,7 +1812,7 @@
             text-align: center;
             padding-top: 1rem;
             margin-top: 1rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-top: 1px solid var(--border-light);
             color: var(--text-muted);
             font-size: 0.85rem;
         }
@@ -2921,12 +3044,16 @@
     <nav id="navbar">
         <div class="nav-container">
             <a href="#" class="logo">
-                <img src="icon.png" alt="PeachSounds">
-                <span class="logo-text">PeachSounds</span>
+                <img src="icon.png" alt="AnyWave">
+                <span class="logo-text">AnyWave</span>
             </a>
             <div class="nav-links">
                 <a href="#how-it-works">How It Works</a>
                 <a href="#pricing" class="nav-cta">Get AnyWave</a>
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                    <span class="theme-icon light">☀️</span>
+                    <span class="theme-icon dark">🌙</span>
+                </button>
             </div>
         </div>
     </nav>
@@ -2938,8 +3065,10 @@
             <div class="grid-pattern"></div>
         </div>
         <div class="hero-content">
-            <h1 style="position: relative;"><span class="gradient">AnyWave</span></h1>
             <p class="hero-tagline">Shift <span class="gradient">Time.</span> Shape <span class="gradient">Sound.</span></p>
+            <p class="hero-subtitle">
+                Move the beats and drops to match your edit. AnyWave cuts and loops the gaps seamlessly.
+            </p>
             
             <div class="hero-visual">
                 <div class="app-screenshot">
@@ -2952,9 +3081,6 @@
                     </div>
                 </div>
             </div>
-            <p class="hero-subtitle">
-                Place every musical moment exactly where you need it. The rest fall into tune.
-            </p>
             <div class="hero-ctas">
                 <a href="#pricing" class="btn btn-primary">
                     <span>Get AnyWave</span>
@@ -2987,30 +3113,43 @@
                 <p class="section-label">How It Works</p>
                 <h2>Pin. Drag. Done.</h2>
                 <p class="section-subtitle">
-                    Make your music fit any duration.<br>Rearrange the emotional moments to tell your story. <br> AnyWave intelligently cuts and stitches the rest with seamless transitions, reshaping the music to match your needs.
+                    Fit any soundtrack to your edit perfectly. Move the emotional peaks to follow your story—AnyWave seamlessly reshapes everything in between.
                 </p>
             </div>
             
             <div class="features-grid">
                 <div class="feature-card">
-                    <div class="feature-icon">🎵</div>
-                    <h3>Smart Analysis</h3>
-                    <p>Drop in any track. AnyWave instantly maps the musical structure and finds natural edit points—no manual beat-matching.</p>
-                </div>
-                <div class="feature-card">
                     <div class="feature-icon">⏱️</div>
                     <h3>Any Duration</h3>
-                    <p>Stretch a 30-second loop to 2 minutes or compress a 3-minute track to 47 seconds—without losing the groove.</p>
+                    <p>Stretch or compress any track to fit your exact timing</p>
+                    <div class="feature-video-container">
+                        <video class="feature-video" loop muted playsinline autoplay>
+                            <source src="Screen Recording 2026-01-22 at 21.30.58.mov" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">📍</div>
                     <h3>Pin Any Moment</h3>
-                    <p>You want the drop from 0:45 to hit at 0:32? Drag it. Add as many pins as you need.</p>
+                    <p>Move the drop, chorus or buildup to land exactly where you need it.</p>
+                    <div class="feature-video-container">
+                        <video class="feature-video" loop muted playsinline autoplay>
+                            <source src="Screen Recording 2026-01-22 at 21.39.25.mov" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">⚡</div>
-                    <h3>Instant Preview & Export</h3>
-                    <p>Hear changes in real-time as you drag. When it's perfect, export and drop into Premiere, Final Cut, DaVinci, or any editor.</p>
+                    <h3>Instant Preview</h3>
+                    <p>Hear changes in real-time as you drag.</p>
+                    <div class="feature-video-container">
+                        <video class="feature-video" loop muted playsinline autoplay>
+                            <source src="Screen Recording 2026-01-22 at 21.48.22.mov" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
                 </div>
             </div>
         </div>
@@ -3043,7 +3182,7 @@
                         <li>✓ Premium support</li>
                         <li>✓ Commercial license</li>
                     </ul>
-                    <a href="https://peachsounds.lemonsqueezy.com/checkout/buy/5585ea8e-18e3-4608-ab13-fb9bac5f36c4?embed=1" class="lemonsqueezy-button btn btn-primary btn-large">
+                    <a href="https://peachsounds.lemonsqueezy.com/checkout/buy/63bb0aac-935d-4274-b374-0d2987314edc?embed=1" class="lemonsqueezy-button btn btn-primary btn-large">
                         Start Subscription
                     </a>
                     <p class="plan-note">Cancel anytime</p>
@@ -3122,15 +3261,13 @@
         <div class="footer-container">
             <div class="footer-brand">
                 <img src="icon.png" alt="AnyWave">
-                <span>PeachSounds</span>
+                <span>AnyWave</span>
             </div>
             <div class="footer-links">
-                <a href="mailto:support@peachsounds.com">Support</a>
                 <a href="/privacy.html">Privacy Policy</a>
-                <a href="#">Terms of Service</a>
             </div>
             <div class="footer-copyright">
-                <p>© 2026 PeachSounds. All rights reserved.</p>
+                <p>© 2026 AnyWave. All rights reserved.</p>
             </div>
         </div>
     </footer>
@@ -3212,6 +3349,44 @@
                 navbar.classList.add('scrolled');
             } else {
                 navbar.classList.remove('scrolled');
+            }
+        });
+        
+        // ============================================
+        // THEME TOGGLE (Dark/Light Mode)
+        // ============================================
+        const themeToggle = document.getElementById('themeToggle');
+        const htmlElement = document.documentElement;
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+        
+        // Get theme: saved preference > system preference
+        function getPreferredTheme() {
+            const saved = localStorage.getItem('theme');
+            if (saved) return saved;
+            return systemPrefersDark.matches ? 'dark' : 'light';
+        }
+        
+        // Apply theme
+        function applyTheme(theme) {
+            htmlElement.setAttribute('data-theme', theme);
+        }
+        
+        // Initialize theme
+        applyTheme(getPreferredTheme());
+        
+        // Toggle button click
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = htmlElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            applyTheme(newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+        
+        // Listen for system preference changes (only if no manual preference saved)
+        systemPrefersDark.addEventListener('change', (e) => {
+            if (!localStorage.getItem('theme')) {
+                applyTheme(e.matches ? 'dark' : 'light');
             }
         });
         
@@ -3468,7 +3643,7 @@
             function updateCheckoutUrl() {
                 if (typeof posthog !== 'undefined' && posthog.get_distinct_id) {
                     const distinctId = posthog.get_distinct_id();
-                    const baseHref = 'https://peachsounds.lemonsqueezy.com/checkout/buy/5585ea8e-18e3-4608-ab13-fb9bac5f36c4?embed=1';
+                    const baseHref = 'https://peachsounds.lemonsqueezy.com/checkout/buy/63bb0aac-935d-4274-b374-0d2987314edc?embed=1';
                     const newHref = `${baseHref}&checkout[custom][posthog_id]=${encodeURIComponent(distinctId)}`;
                     checkoutBtn.setAttribute('href', newHref);
                     console.log('Checkout URL updated with PostHog ID:', distinctId);
@@ -3509,6 +3684,121 @@
                 }
             });
         }
+        
+        // ============================================
+        // LEMON SQUEEZY CHECKOUT SUCCESS - IDENTIFY USER
+        // This merges the anonymous visitor with their email
+        // ============================================
+        
+        // Hash email function (same as webhook worker)
+        async function hashEmailLS(email) {
+            const normalized = email.toLowerCase().trim();
+            const encoder = new TextEncoder();
+            const data = encoder.encode(normalized);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+        
+        // Handle checkout success - called from multiple sources
+        async function handleCheckoutSuccess(email, orderData) {
+            console.log('handleCheckoutSuccess called with email:', email ? '***' : 'none');
+            
+            if (!email) {
+                console.log('No email provided, cannot identify');
+                return;
+            }
+            
+            if (typeof posthog === 'undefined') {
+                console.log('PostHog not loaded');
+                return;
+            }
+            
+            try {
+                const hashedEmail = await hashEmailLS(email);
+                console.log('Identifying user with hashed email:', hashedEmail);
+                
+                // Identify the user - this merges anonymous with identified
+                posthog.identify(hashedEmail, {
+                    email_hash: hashedEmail,
+                    checkout_completed: true
+                });
+                
+                // Capture checkout_completed event
+                posthog.capture('checkout_completed_client', {
+                    order_id: orderData?.id,
+                    total: orderData?.total,
+                    currency: orderData?.currency,
+                    source: 'landing_page_overlay'
+                });
+                
+                console.log('PostHog: User identified and checkout_completed_client tracked!');
+            } catch (err) {
+                console.error('Error in handleCheckoutSuccess:', err);
+            }
+        }
+        
+        // Method 1: Lemon Squeezy official event setup
+        function setupLemonSqueezyEvents() {
+            if (typeof window.LemonSqueezy !== 'undefined') {
+                console.log('Setting up LemonSqueezy events via API');
+                window.LemonSqueezy.Setup({
+                    eventHandler: function(event) {
+                        console.log('LemonSqueezy API event:', event);
+                        if (event.event === 'Checkout.Success' || event === 'Checkout.Success') {
+                            const email = event.data?.order?.user_email || event.data?.user_email;
+                            handleCheckoutSuccess(email, event.data?.order);
+                        }
+                    }
+                });
+            } else {
+                console.log('LemonSqueezy not loaded yet, retrying in 500ms');
+                setTimeout(setupLemonSqueezyEvents, 500);
+            }
+        }
+        
+        // Try to setup after page load
+        if (document.readyState === 'complete') {
+            setupLemonSqueezyEvents();
+        } else {
+            window.addEventListener('load', setupLemonSqueezyEvents);
+        }
+        
+        // Listen for Lemon Squeezy checkout events
+        window.addEventListener('message', async function(event) {
+            // Log ALL messages for debugging
+            console.log('PostMessage received:', event.origin, event.data);
+            
+            // Accept messages from Lemon Squeezy domains
+            if (!event.origin.includes('lemonsqueezy.com')) return;
+            
+            try {
+                const data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
+                
+                console.log('Lemon Squeezy event parsed:', data);
+                
+                // Check for checkout success - try multiple event names
+                const eventName = data.event || data.type || data.name || '';
+                console.log('Event name:', eventName);
+                
+                if (eventName.toLowerCase().includes('success') || eventName.toLowerCase().includes('complete')) {
+                    console.log('Checkout successful via postMessage!', data);
+                    
+                    // Get customer email from various possible locations
+                    const email = data.data?.order?.user_email 
+                        || data.data?.user_email 
+                        || data.order?.user_email
+                        || data.user_email
+                        || data.data?.customer_email
+                        || data.customer_email;
+                    
+                    // Use shared handler
+                    handleCheckoutSuccess(email, data.data?.order || data.order);
+                }
+            } catch (e) {
+                // Not a JSON message or not from Lemon Squeezy
+            }
+        });
     </script>
 </body>
 </html>
