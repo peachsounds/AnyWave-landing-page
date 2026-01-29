@@ -263,7 +263,7 @@
          ============================================ -->
     <script>
         // PostHog configuration
-        const POSTHOG_API_KEY = 'phc_MXfn9DpHMbAxhDeXlBYaWvmG7GD6ouG799kzHEcynwR';
+        const POSTHOG_API_KEY = 'phc_P4BmS0AOokuSdpmsnjp6UugxOFsulYiS1RsGKJ5KOmr';
         const POSTHOG_API_HOST = 'https://us.i.posthog.com';
         
         // Track initialization states
@@ -405,7 +405,8 @@
             
             // Check for internal tester flag
             if (localStorage.getItem('anywave_internal_tester') === 'true') {
-                posthog.setPersonProperties({ is_internal: true });
+                posthog.register({ is_internal: true });  // Adds to ALL events including automatic ones
+                posthog.setPersonProperties({ is_internal: true });  // Also set on person profile
                 console.log('🔧 Internal tester flag detected - marked as internal user');
             }
             
