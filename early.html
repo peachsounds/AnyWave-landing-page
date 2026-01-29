@@ -267,6 +267,24 @@
         // Track if PostHog has been initialized this session
         let posthogInitialized = false;
         
+        // Check if this is an internal tester (check once at startup)
+        const isInternalTester = localStorage.getItem('anywave_internal_tester') === 'true';
+        if (isInternalTester) {
+            console.log('🔧 Internal tester mode detected');
+        }
+        
+        /**
+         * Get base properties to include in all events
+         * Includes is_internal flag if tester mode is enabled
+         */
+        function getBaseEventProps() {
+            const props = {};
+            if (isInternalTester) {
+                props.is_internal = true;
+            }
+            return props;
+        }
+        
         /**
          * Initialize PostHog analytics
          * @param {boolean} justGrantedConsent - True if user just clicked Accept
@@ -289,17 +307,42 @@
             
             posthogInitialized = true;
             
+            // Check for internal tester flag
+            if (localStorage.getItem('anywave_internal_tester') === 'true') {
+                posthog.setPersonProperties({ is_internal: true });
+                console.log('🔧 Internal tester flag detected - marked as internal user');
+            }
+            
             // If user just granted consent, track that event first
             if (justGrantedConsent) {
                 // Wait for PostHog to be ready, then track consent and page view
                 setTimeout(() => {
-                    posthog.capture('consent_granted', { source: 'cookie_banner' });
+                    // Track page_loaded first (this page doesn't have pre-consent tracking)
+                    posthog.capture('page_loaded', {
+                        ...getBaseEventProps(),
+                        page: 'early_access',
+                        url: window.location.href,
+                        referrer: document.referrer || 'direct'
+                    });
+                    console.log('📊 PostHog: page_loaded tracked');
+                    
+                    posthog.capture('consent_granted', { ...getBaseEventProps(), source: 'cookie_banner' });
                     console.log('PostHog: consent_granted tracked');
                     initTracking();
                 }, 300);
             } else {
-                // Returning user who already consented
-                setTimeout(initTracking, 200);
+                // Returning user who already consented - track page_loaded
+                setTimeout(() => {
+                    posthog.capture('page_loaded', {
+                        ...getBaseEventProps(),
+                        page: 'early_access',
+                        url: window.location.href,
+                        referrer: document.referrer || 'direct',
+                        returning_user: true
+                    });
+                    console.log('📊 PostHog: page_loaded tracked (returning user)');
+                    initTracking();
+                }, 200);
             }
         }
     </script>
@@ -1939,6 +1982,7 @@
             
             // Track page view with person properties (no identify - use PostHog's auto ID)
             posthog.capture('page_viewed', {
+                ...getBaseEventProps(),
                 ...eventProps,
                 $set_once: personProps
             });
@@ -2028,6 +2072,7 @@
                 if (typeof posthog !== 'undefined') {
                     const distinctId = posthog.get_distinct_id();
                     posthog.capture('checkout_started', {
+                        ...getBaseEventProps(),
                         plan: 'early_access',
                         price: 0,
                         source: 'early_access_page',
@@ -2070,6 +2115,7 @@
             // Just capture the event - webhook handles user identity merging
             // This avoids race conditions between client and server
             posthog.capture('checkout_completed_client', {
+                ...getBaseEventProps(),
                 order_id: orderData?.id,
                 total: orderData?.total,
                 currency: orderData?.currency,
